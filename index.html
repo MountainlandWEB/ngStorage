@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
+    <script>
+
+        var app = angular.module("app", ["ngStorage"]);
+
+        app.controller("MainController", MainController);
+
+        function MainController($localStorage, $sessionStorage) {
+            var vm = this;
+            vm.localStorage = $localStorage; // added both to the controller for access from view below
+            vm.sessionStorage = $sessionStorage;
+
+            vm.saveLocalStorage = function () {
+                $localStorage.message = "Hello World";
+            };
+
+            vm.loadLocalStorage = function () {
+                vm.helloWorld = $localStorage.message;
+            };
+
+            vm.clearMessageLocalStorage = function (key) {
+                delete $localStorage[key];
+            };
+
+            vm.clearMessageSessionStorage = function (key) {
+                delete $sessionStorage[key];
+            };
+        }
+
+    </script>
+</head>
+<body ng-app="app">
+    <div ng-controller="MainController as main">
+        <p>Using functions to populate a variable with data from $localStorage.</p>
+        <button ng-click="main.saveLocalStorage()">Save "Hello World" into localStorage</button>
+        <button ng-click="main.loadLocalStorage()">Load "Hello World" from localStorage</button>
+        <button ng-click="main.clearMessageLocalStorage('message')">Clear "Hello World" from localStorage</button>
+        <h3 ng-bind="main.helloWorld"></h3>
+
+        <p>Interacting with $localStorage directly. Note that because we've bound directly to the service, we no longer need
+            to load after setting or clearing.</p>
+        <button ng-click="main.localStorage.message2 = 'Hello again'">Save into localStorage</button>
+        <button ng-click="main.clearMessageLocalStorage('message2')">Clear from localStorage</button>
+        <h3 ng-bind="main.localStorage.message2"></h3>
+
+        <p>The two localStorage examples above will share data between tabs. Try setting a value then reloading the page in
+            another tab.</p>
+        <p>The following example uses sessionStorage. It will not share data between tabs (Chrome, Firefox) or windows
+            (other
+            browsers) and the data is lost when the tab/window is closed.</p>
+        <button
+                ng-click="main.sessionStorage.message = 'This string stored in sessionStorage. I disappear when the tab is closed.'">
+            Save into sessionStorage
+        </button>
+        <button ng-click="main.clearMessageSessionStorage('message')">Clear from sessionStorage</button>
+        <h3 ng-bind="main.sessionStorage.message"></h3>
+
+        <p>A primary advantage of ngStorage over vanilla localStorage and sessionStorage is the ability to work with complex
+            objects without having to serialize and deserialize strings.</p>
+        <button ng-click="main.localStorage.myObj = {someKey: 'someVal', anotherKey: 'anotherVal'}">Save object into
+            localStorage
+        </button>
+        <button ng-click="main.clearMessageLocalStorage('myObj')">Clear from localStorage</button>
+        <h3 ng-bind="main.localStorage.myObj"></h3>
+        <h3 ng-bind="main.localStorage.myObj.someKey"></h3>
+        <h3 ng-bind="main.localStorage.myObj.anotherKey"></h3>
+    </div>
+</body>
+</html>
