@@ -34,40 +34,42 @@
     </script>
 </head>
 <body ng-app="app">
-    <div ng-controller="MainController as main">
+    <div ng-controller="MainController as vm">
         <p>Using functions to populate a variable with data from $localStorage.</p>
-        <button ng-click="main.saveLocalStorage()">Save "Hello World" into localStorage</button>
-        <button ng-click="main.loadLocalStorage()">Load "Hello World" from localStorage</button>
-        <button ng-click="main.clearMessageLocalStorage('message')">Clear "Hello World" from localStorage</button>
-        <h3 ng-bind="main.helloWorld"></h3>
+        <button ng-click="vm.saveLocalStorage()">$localStorage.message = "Hello World";</button><br />
+        <button ng-click="vm.loadLocalStorage()">vm.helloWorld = $localStorage.message;</button><br />
+        <button ng-click="vm.clearMessageLocalStorage('message')">delete $localStorage['message'];</button>
+        <h3>vm.helloWorld: {{ vm.helloWorld }}</h3>
+        <hr />
 
         <p>Interacting with $localStorage directly. Note that because we've bound directly to the service, we no longer need
             to load after setting or clearing.</p>
-        <button ng-click="main.localStorage.message2 = 'Hello again'">Save into localStorage</button>
-        <button ng-click="main.clearMessageLocalStorage('message2')">Clear from localStorage</button>
-        <h3 ng-bind="main.localStorage.message2"></h3>
+        <p>vm.localStorage = $localStorage;</p>
+        <button ng-click="vm.localStorage.message2 = 'Hello again'">vm.localStorage.message2 = 'Hello again'</button><br />
+        <button ng-click="vm.clearMessageLocalStorage('message2')">delete $localStorage['message2'];</button>
+        <h3>vm.localStorage.message2: {{ vm.localStorage.message2 }}</h3>
+        <hr />
 
         <p>The two localStorage examples above will share data between tabs. Try setting a value then reloading the page in
             another tab.</p>
         <p>The following example uses sessionStorage. It will not share data between tabs (Chrome, Firefox) or windows
             (other
             browsers) and the data is lost when the tab/window is closed.</p>
-        <button
-                ng-click="main.sessionStorage.message = 'This string stored in sessionStorage. I disappear when the tab is closed.'">
-            Save into sessionStorage
-        </button>
-        <button ng-click="main.clearMessageSessionStorage('message')">Clear from sessionStorage</button>
-        <h3 ng-bind="main.sessionStorage.message"></h3>
+        <p>vm.sessionStorage = $sessionStorage;</p>
+        <button ng-click="vm.sessionStorage.message = 'This string is stored in sessionStorage. I disappear when the tab is closed.'"
+                >vm.sessionStorage.message = 'This string...'</button><br />
+        <button ng-click="vm.clearMessageSessionStorage('message')">delete $sessionStorage['message'];</button>
+        <h3>vm.sessionStorage.message: {{ vm.sessionStorage.message }}</h3>
+        <hr />
 
         <p>A primary advantage of ngStorage over vanilla localStorage and sessionStorage is the ability to work with complex
             objects without having to serialize and deserialize strings.</p>
-        <button ng-click="main.localStorage.myObj = {someKey: 'someVal', anotherKey: 'anotherVal'}">Save object into
-            localStorage
-        </button>
-        <button ng-click="main.clearMessageLocalStorage('myObj')">Clear from localStorage</button>
-        <h3 ng-bind="main.localStorage.myObj"></h3>
-        <h3 ng-bind="main.localStorage.myObj.someKey"></h3>
-        <h3 ng-bind="main.localStorage.myObj.anotherKey"></h3>
+        <button ng-click="vm.localStorage.myObj = {someKey: 'someVal', anotherKey: 'anotherVal'}"
+                >vm.localStorage.myObj = {someKey: 'someVal', anotherKey: 'anotherVal'};</button><br />
+        <button ng-click="vm.clearMessageLocalStorage('myObj')">delete $sessionStorage['myObj'];</button>
+        <h3>vm.localStorage.myObj: {{ vm.localStorage.myObj | json }}</h3>
+        <h3>vm.localStorage.myObj.someKey: {{ vm.localStorage.myObj.someKey }}</h3>
+        <h3>vm.localStorage.myObj.anotherKey: {{ vm.localStorage.myObj.anotherKey }}</h3>
     </div>
 </body>
 </html>
